@@ -85,8 +85,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://github.com/osam7a/Etisalat-Payment-Wordpress)
-
 This plugin provides a secure and efficient payment solution, allowing WordPress site owners to easily accept payments through the Etisalat network. It offers customizable settings, real-time transaction processing, and comprehensive documentation to facilitate smooth implementation. 
 
 The Integration Plugin is an ideal solution for e-commerce businesses looking to expand their payment options in the UAE. By integrating with the Etisalat Payment Gateway, you can offer your customers a trusted and widely-used payment method. Improve your WordPress site’s functionality and provide a superior shopping experience with a reliable and efficient payment integration plugin.
@@ -190,9 +188,9 @@ Use this space to list resources you find helpful and would like to give credit 
 [license-shield]: https://img.shields.io/github/license/osam7a/Etisalat-Payment-Wordpress.svg?style=for-the-badge
 [license-url]: https://github.com/osam7a/Etisalat-Payment-Wordpress/blob/master/LICENSE
 [product-screenshot]: screenshot.png
-[Woocommerce]: https://img.shields.io/badge/-white?style=for-the-badge&logo=woocommerce&logoColor=103e2e&logoSize=auto
+[Woocommerce]: https://img.shields.io/badge/Woocommerce-white?style=for-the-badge&logo=woocommerce&logoSize=auto
 [Woocommerce-url]: https://woocommerce.com
-[PHP]: https://img.shields.io/badge/PHP-white?style=for-the-badge&logo=php&logoColor=103e2e
+[PHP]: https://img.shields.io/badge/PHP-white?style=for-the-badge&logo=php&logoSize=auto
 [PHP-url]: https://php.net
-[Wordpress]: https://img.shields.io/badge/Wordpress-white?style=for-the-badge&logo=Wordpress
+[Wordpress]: https://img.shields.io/badge/Wordpress-white?style=for-the-badge&logo=Wordpress&logoSize=auto&logoColor=black
 [Wordpress-url]: https://wordpress.org
