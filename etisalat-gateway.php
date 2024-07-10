@@ -133,6 +133,52 @@ function init_etisalat_gateway() {
             error_log("Customer ID: " . $customer_id.PHP_EOL, 3, $this->error_log_dir);
             error_log("Order Total: " . $order_total.PHP_EOL, 3, $this->error_log_dir);
             error_log("Item Count: " . $item_count.PHP_EOL, 3, $this->error_log_dir);
+
+            // Make request to URL with data:
+            /*
+            {
+                "Registration": {
+                    "Customer": <customer_id>,
+                    "Channel": "Web",
+                    "Amount": <order_total>,
+                    "Currency": "AED",
+                    "OrderID": <order_id>,
+                    "OrderName": "Order #<order_id>",
+                    "OrderInfo": "N items from our Online Store",
+                    "TransactionHint": "CPT:Y;VCC:Y;",
+                    "ReturnPath": <callback_url>,
+                    "Username": <username>,
+                    "Password": <password>
+                }
+            }
+            */
+            $registration_body = array(
+                'Registration' => array(
+                    'Customer' => $customer_id,
+                    'Channel' => 'Web',
+                    'Amount' => $order_total,
+                    'Currency' => 'AED',
+                    'OrderID' => $order_id,
+                    'OrderName' => "Order #$order_id",
+                    'OrderInfo' => "$item_count items from our Online Store",
+                    'TransactionHint' => 'CPT:Y;VCC:Y;',
+                    'ReturnPath' => $callback_url,
+                    'UserName' => $username,
+                    'Password' => $password
+                )
+            );
+            error_log("POST (Registration) $uri -> ".json_encode(array_slice($registration_body,0,-1)).PHP_EOL, 3, $this->error_log_dir);
+            $response = wp_remote_post($uri, array(
+                'headers' => $this->api_headers,
+                'body' => json_encode($registration_body)
+            ));
+            if (is_wp_error($response)) {
+                $error_message = $response->get_error_message();
+                wc_add_notice('Error: ' . $error_message, 'error');
+                error_log(PHP_EOL, 3, $this->error_log_dir);
+                error_log("ERROR: " . $error_message.PHP_EOL, 3, $this->error_log_dir);
+                return;
+            }
         }
     }
 }
