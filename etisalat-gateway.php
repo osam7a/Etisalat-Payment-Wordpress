@@ -216,6 +216,39 @@ function init_etisalat_gateway() {
             $customer_id = $this->testmode ? "Demo Merchant" : $this->customer_id;
             
             $this->gateway_log("Transaction ID: " . $transaction_id . ", Customer ID: " . $customer_id);
+
+            // Make request to Finalization URL with data:
+            /*
+            {
+                "Finalization": {
+                    "Customer": <customer_id>,
+                    "TransactionID": <transaction_id>,
+                    "Username": <username>,
+                    "Password": <password>
+                }
+            }
+            */
+            $finalization_body = array(
+                'Finalization' => array(
+                    'Customer' => $customer_id,
+                    'TransactionID' => $transaction_id,
+                    'UserName' => $username,
+                    'Password' => $password
+                )
+            );
+            $this->gateway_log("POST (Finalization) $uri -> " . json_encode(array_slice($finalization_body, 0, -1)), false);
+            $response = wp_remote_post($uri, array(
+                'headers' => $this->api_headers,
+                'body' => json_encode($finalization_body)
+            ));
+            if (is_wp_error($response)) {
+                $error_message = $response->get_error_message();
+                $this->gateway_log("");
+                $this->gateway_log("Error: " . $error_message, false);
+                return;
+            }
+            $response_data = json_decode(wp_remote_retrieve_body($response), true);
+            $this->gateway_log("Response Data: " . json_encode($response_data), false);   
         }
     }
 }
