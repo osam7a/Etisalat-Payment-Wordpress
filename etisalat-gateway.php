@@ -249,6 +249,32 @@ function init_etisalat_gateway() {
             }
             $response_data = json_decode(wp_remote_retrieve_body($response), true);
             $this->gateway_log("Response Data: " . json_encode($response_data), false);   
-        }
+
+            $thankyou = get_option('siteurl') . '/checkout/order-received/' . $_GET['order_id'];
+            $checkout_url = get_option('siteurl') . '/checkout/';
+            $response_code = $response_data['Transaction']['ResponseCode'];
+            $response_description = $response_data['Transaction']['ResponseDescription'];
+            $this->gateway_log("Response Code: " . $response_code);
+            $this->gateway_log("Thank You Page: " . $thankyou, false);
+            if ($response_code === '0') {
+                $order->payment_complete();
+                $order->add_order_note('Payment completed successfully.');
+                $order->save();
+                $this->gateway_log("Payment is successful", false);
+                header('Location: ' . $thankyou);
+                exit;
+            } else if ($response_code == '51' || $response_code == '91') {
+                $order->update_status('on-hold', 'Payment is pending.');
+                $order->add_order_note('Payment is pending.');
+                $order->save();
+            } else {
+                $order->update_status('failed', 'Payment failed.');
+                $order->add_order_note("Payment failed. Reason ($response_code): $response_description");
+                $order->save();
+            }
+            $this->gateway_log("Payment failed ($response_code)", false);
+            header('Location: ' . $this->payment_failed);
+            exit;
+        }            
     }
 }
