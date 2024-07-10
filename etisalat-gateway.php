@@ -48,9 +48,14 @@ function init_etisalat_gateway() {
             $this->username = $this->get_option('username');
             $this->password = $this->get_option('password');
             $this->payment_failed = $this->get_option('payment_failed');
+
+            add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
+            add_action('woocommerce_api_epg-callback', array( $this, 'webhook' ));
+            
+            add_action('wp_enqueue_scripts', array($this, 'payment_scripts'));
         }
 
-        public function gateway_log($message, $show_date=false) {
+        public function gateway_log($message, $show_date=true) {
             if ($show_date) {
                 error_log(date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL, 3, $this->error_log_dir);
             } else {
@@ -107,6 +112,27 @@ function init_etisalat_gateway() {
                     'description' => 'URL for the page which user will be redirected to after a failed payment.'
                 )
             );
+        }
+
+        public function process_payment($order_id) {
+            $this->gateway_log("");
+            $this->gateway_log("[Processing payment for order ID:" . $order_id . "]", false);
+            $order = wc_get_order($order_id);
+            $callback_url = get_option('siteurl') . '/wc-api/epg-callback?order_id=' . $order_id;
+            $username = $this->testmode ? "Demo_fY9c" : $this->username;
+            $password = $this->testmode ? "Comtrust@20182018" : $this->password;
+            $uri = $this->testmode ? $this->api_uri_testing : $this->api_uri_live;
+
+            $customer_id = $this->testmode ? "Demo Merchant" : $this->customer_id;
+            $order_total = $order->get_total();
+            $order_id = $order->get_id();
+            $item_count = $order->get_item_count();
+
+            error_log("Test Mode: " . $this->testmode. "URL: " . $uri . PHP_EOL, 3, $this->error_log_dir);
+            error_log("Username: " . $username . ", Password: " . substr($password, 0, 3) . "****".PHP_EOL, 3, $this->error_log_dir);
+            error_log("Customer ID: " . $customer_id.PHP_EOL, 3, $this->error_log_dir);
+            error_log("Order Total: " . $order_total.PHP_EOL, 3, $this->error_log_dir);
+            error_log("Item Count: " . $item_count.PHP_EOL, 3, $this->error_log_dir);
         }
     }
 }
