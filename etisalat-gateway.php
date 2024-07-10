@@ -54,7 +54,6 @@ function init_etisalat_gateway() {
             );
 
             $this->init_form_fields();
-            $this->init_settings();
 
             $this->init_settings();
             $this->customer_id = $this->get_option('customer_id');
