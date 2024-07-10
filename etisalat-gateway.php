@@ -12,7 +12,7 @@ ini_set('log_errors', 1);
 ini_set('error_log', dirname(__FILE__) . '/error_log.txt');
 
 add_filter('woocommerce_payment_gateways', 'add_etisalat_gateway');
-
+add_filter( 'http_request_timeout', function( $timeout ) { return 10 ;});
 function add_etisalat_gateway($gateways)
 {
     $gateways[] = 'WC_Etisalat_Gateway';
