@@ -22,6 +22,15 @@ function add_etisalat_gateway($gateways)
 add_action('plugins_loaded', 'init_etisalat_gateway');
 function init_etisalat_gateway() {
     class WC_Etisalat_Gateway extends WC_Payment_Gateway {
+        public $api_uri_testing, $api_uri_live;
+        public $api_headers;
+        public $testmode;
+        public $payment_failed;
+        public $customer_id;
+        public $error_log_dir;
+        
+        private $username, $password;
+        
         public function __construct() {
             $this->id = 'etisalat-gateway';
             $this->has_fields = true;
