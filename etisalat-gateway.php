@@ -128,11 +128,12 @@ function init_etisalat_gateway() {
             $order_id = $order->get_id();
             $item_count = $order->get_item_count();
 
-            error_log("Test Mode: " . $this->testmode. "URL: " . $uri . PHP_EOL, 3, $this->error_log_dir);
-            error_log("Username: " . $username . ", Password: " . substr($password, 0, 3) . "****".PHP_EOL, 3, $this->error_log_dir);
-            error_log("Customer ID: " . $customer_id.PHP_EOL, 3, $this->error_log_dir);
-            error_log("Order Total: " . $order_total.PHP_EOL, 3, $this->error_log_dir);
-            error_log("Item Count: " . $item_count.PHP_EOL, 3, $this->error_log_dir);
+            $this->gateway_log("Test Mode: " . $this->testmode);
+            $this->gateway_log("URL: " . $uri);
+            $this->gateway_log("Username: " . $username . ", Password: " . substr($password, 0, 3) . "****");
+            $this->gateway_log("Customer ID: " . $customer_id);
+            $this->gateway_log("Order Total: " . $order_total);
+            $this->gateway_log("Item Count: " . $item_count);
 
             // Make request to URL with data:
             /*
@@ -167,7 +168,7 @@ function init_etisalat_gateway() {
                     'Password' => $password
                 )
             );
-            error_log("POST (Registration) $uri -> ".json_encode(array_slice($registration_body,0,-1)).PHP_EOL, 3, $this->error_log_dir);
+            $this->gateway_log("POST (Registration) $uri -> " . json_encode(array_slice($registration_body, 0, -1)), false);
             $response = wp_remote_post($uri, array(
                 'headers' => $this->api_headers,
                 'body' => json_encode($registration_body)
@@ -175,8 +176,8 @@ function init_etisalat_gateway() {
             if (is_wp_error($response)) {
                 $error_message = $response->get_error_message();
                 wc_add_notice('Error: ' . $error_message, 'error');
-                error_log(PHP_EOL, 3, $this->error_log_dir);
-                error_log("ERROR: " . $error_message.PHP_EOL, 3, $this->error_log_dir);
+                $this->gateway_log("");
+                $this->gateway_log("Error: " . $error_message, false);
                 return;
             }
 
@@ -184,20 +185,37 @@ function init_etisalat_gateway() {
             $response_data = json_decode($response_body, true);
             if ($response_data['Transaction']['ResponseCode'] !== '0') {
                 wc_add_notice('Error: ' . $response_data['Transaction']['ResponseDescription'], 'error');
-                error_log("".PHP_EOL, 3, $this->error_log_dir);
-                error_log("ERROR: " . $response_data['Transaction']['ResponseDescription'].PHP_EOL, 3, $this->error_log_dir);
+                $this->gateway_log("");
+                $this->gateway_log("ERROR: " . $response_data['Transaction']['ResponseDescription'], false);
                 return;
             }
 
             $paymentPage = $response_data['Transaction']['PaymentPage'];
 
-            error_log("Response Data: " . json_encode($response_data).PHP_EOL, 3, $this->error_log_dir);
-            error_log("Registration Successful, redirecting to $paymentPage".PHP_EOL, 3, $this->error_log_dir);
+            $this->gateway_log("Response Code: " . $response_data['Transaction']['ResponseCode']);
+            $this->gateway_log("Response Data: " . json_encode($response_data));
+            $this->gateway_log("Registration Successful, redirecting to $paymentPage", false);
 
             return array(
                 'result' => 'success',
                 'redirect' => $paymentPage
             );
+        }
+
+        public function payment_scripts() {
+        }
+
+        public function webhook() {
+            $this->gateway_log("Finalization webhook called, Order ID: " . $_GET['order_id']);
+            $transaction_id = $_POST['TransactionID'];
+            $order = wc_get_order($_GET['order_id']);
+
+            $uri = $this->testmode ? $this->api_uri_testing : $this->api_uri_live;
+            $username = $this->testmode ? "Demo_fY9c" : $this->username;
+            $password = $this->testmode ? "Comtrust@20182018" : $this->password;
+            $customer_id = $this->testmode ? "Demo Merchant" : $this->customer_id;
+            
+            $this->gateway_log("Transaction ID: " . $transaction_id . ", Customer ID: " . $customer_id);
         }
     }
 }
