@@ -50,6 +50,14 @@ function init_etisalat_gateway() {
             $this->payment_failed = $this->get_option('payment_failed');
         }
 
+        public function gateway_log($message, $show_date=false) {
+            if ($show_date) {
+                error_log(date('Y-m-d H:i:s') . ' - ' . $message . PHP_EOL, 3, $this->error_log_dir);
+            } else {
+                error_log($message . PHP_EOL, 3, $this->error_log_dir);
+            }
+        }
+
         public function init_form_fields() {
             $this->form_fields = array(
                 'enabled' => array(
