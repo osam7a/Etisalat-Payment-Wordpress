@@ -9,7 +9,7 @@
  */
 
 ini_set('log_errors', 1);
-ini_set('error_log', dirname(__FILE__) . '/error_log.txt');
+ini_set('error_log', dirname(__FILE__) . '/etisalat-gateway_logs.txt');
 
 add_filter('woocommerce_payment_gateways', 'add_etisalat_gateway');
 add_filter( 'http_request_timeout', function( $timeout ) { return 10 ;});
@@ -30,7 +30,7 @@ function init_etisalat_gateway() {
         public $error_log_dir;
         
         private $username, $password;
-        
+
         public function __construct() {
             $this->id = 'etisalat-gateway';
             $this->has_fields = true;
