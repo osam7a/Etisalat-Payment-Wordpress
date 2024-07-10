@@ -29,6 +29,14 @@ function init_etisalat_gateway() {
             $this->method_description = 'Powered by Etisalat, a secure and fast method to complete your transaction with multiple methods including: Apple Pay, Visa / Mastercard, Samsung Pay, etc.';
             $this->api_uri_live = "https://ipg.comtrust.ae:2443/";
             $this->api_uri_testing = 'https://demo-ipg.ctdev.comtrust.ae:2443/';
+            $this->api_headers = array(
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                "Access-Control-Allow-Origin" => "*",
+                "Access-Control-Allow-Methods" => "POST",
+                "Access-Control-Allow-Credentials" => "true",
+                "Access-Control-Allow-Headers" => "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+            );
             $this->error_log_dir = dirname(__FILE__) . '/etisalat-gateway_logs.txt';
             
             $this->supports = array(
