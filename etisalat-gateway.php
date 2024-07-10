@@ -18,3 +18,23 @@ function add_etisalat_gateway($gateways)
     $gateways[] = 'WC_Etisalat_Gateway';
     return $gateways;
 }
+
+add_action('plugins_loaded', 'init_etisalat_gateway');
+function init_etisalat_gateway() {
+    class WC_Etisalat_Gateway extends WC_Payment_Gateway {
+        public function __construct() {
+            $this->id = 'etisalat-gateway';
+            $this->has_fields = true;
+            $this->method_title = 'Online Payment (Etisalat)';
+            $this->method_description = 'Powered by Etisalat, a secure and fast method to complete your transaction with multiple methods including: Apple Pay, Visa / Mastercard, Samsung Pay, etc.';
+            $this->api_uri_live = "https://ipg.comtrust.ae:2443/";
+            $this->api_uri_testing = 'https://demo-ipg.ctdev.comtrust.ae:2443/';
+            $this->error_log_dir = dirname(__FILE__) . '/etisalat-gateway_logs.txt';
+            
+            $this->supports = array(
+                'products',
+                'refunds'
+            );
+        }
+    }
+}
