@@ -20,8 +20,10 @@
 -->
 <div align="center">
 
+[![Contributors][contributors-shield]][contributors-url]
 [![Commits][commits-shield]][commits-url]
 [![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
 
 </div>
 
