@@ -132,7 +132,7 @@ function init_etisalat_gateway() {
 
         public function process_payment($order_id) {
             $this->gateway_log("");
-            $this->gateway_log("[Processing payment for order ID:" . $order_id . "]", false);
+            $this->gateway_log("[Processing payment for Order ID:" . $order_id . "]", false);
             $order = wc_get_order($order_id);
             $callback_url = get_option('siteurl') . '/wc-api/epg-callback?order_id=' . $order_id;
             $username = $this->testmode ? "Demo_fY9c" : $this->username;
@@ -191,16 +191,16 @@ function init_etisalat_gateway() {
             ));
             if (is_wp_error($response)) {
                 $error_message = $response->get_error_message();
-                wc_add_notice('Error: ' . $error_message, 'error');
+                wc_add_notice('ERROR: ' . $error_message, 'error');
                 $this->gateway_log("");
-                $this->gateway_log("Error: " . $error_message, false);
+                $this->gateway_log("ERROR: " . $error_message, false);
                 return;
             }
 
             $response_body = wp_remote_retrieve_body($response);
             $response_data = json_decode($response_body, true);
             if ($response_data['Transaction']['ResponseCode'] !== '0') {
-                wc_add_notice('Error: ' . $response_data['Transaction']['ResponseDescription'], 'error');
+                wc_add_notice('ERROR: ' . $response_data['Transaction']['ResponseDescription'], 'error');
                 $this->gateway_log("");
                 $this->gateway_log("ERROR: " . $response_data['Transaction']['ResponseDescription'], false);
                 return;
@@ -260,7 +260,7 @@ function init_etisalat_gateway() {
             if (is_wp_error($response)) {
                 $error_message = $response->get_error_message();
                 $this->gateway_log("");
-                $this->gateway_log("Error: " . $error_message, false);
+                $this->gateway_log("ERROR: " . $error_message, false);
                 return;
             }
             $response_data = json_decode(wp_remote_retrieve_body($response), true);
