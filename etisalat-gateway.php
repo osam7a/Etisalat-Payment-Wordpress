@@ -179,6 +179,25 @@ function init_etisalat_gateway() {
                 error_log("ERROR: " . $error_message.PHP_EOL, 3, $this->error_log_dir);
                 return;
             }
+
+            $response_body = wp_remote_retrieve_body($response);
+            $response_data = json_decode($response_body, true);
+            if ($response_data['Transaction']['ResponseCode'] !== '0') {
+                wc_add_notice('Error: ' . $response_data['Transaction']['ResponseDescription'], 'error');
+                error_log("".PHP_EOL, 3, $this->error_log_dir);
+                error_log("ERROR: " . $response_data['Transaction']['ResponseDescription'].PHP_EOL, 3, $this->error_log_dir);
+                return;
+            }
+
+            $paymentPage = $response_data['Transaction']['PaymentPage'];
+
+            error_log("Response Data: " . json_encode($response_data).PHP_EOL, 3, $this->error_log_dir);
+            error_log("Registration Successful, redirecting to $paymentPage".PHP_EOL, 3, $this->error_log_dir);
+
+            return array(
+                'result' => 'success',
+                'redirect' => $paymentPage
+            );
         }
     }
 }
