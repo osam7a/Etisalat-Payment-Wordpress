@@ -35,6 +35,70 @@ function init_etisalat_gateway() {
                 'products',
                 'refunds'
             );
+
+            $this->init_form_fields();
+            $this->init_settings();
+
+            $this->init_settings();
+            $this->customer_id = $this->get_option('customer_id');
+            $this->title = $this->get_option('title');
+            $this->description = $this->get_option('description');
+            $this->enabled = $this->get_option('enabled');
+            $this->testmode = 'yes' === $this->get_option('testmode');
+            $this->username = $this->get_option('username');
+            $this->password = $this->get_option('password');
+            $this->payment_failed = $this->get_option('payment_failed');
+        }
+
+        public function init_form_fields() {
+            $this->form_fields = array(
+                'enabled' => array(
+                    'title' => 'Enable/Disable',
+                    'type' => 'checkbox',
+                    'label' => 'Enable Etisalat Payment Gateway?',
+                    'default' => 'no'
+                ),
+                'customer_id' => array(
+                    'title' => 'Customer ID',
+                    'type' => 'text',
+                    'description' => 'Your EPG Account Customer ID found in the settings page.'
+                ),
+                'title' => array(
+                    'title' => 'Title',
+                    'type' => 'text',
+                    'description' => 'This controls the title which the user sees during checkout.',
+                    'default' => 'Online Payment (Etisalat)',
+                    'desc_tip' => true
+                ),
+                'description' => array(
+                    'title' => 'Description',
+                    'type' => 'textarea',
+                    'description' => 'This controls the description which the user sees during checkout.',
+                    'default' => 'Powered by Etisalat, a secure and fast method to complete your transaction with multiple methods including: Apple Pay, Visa / Mastercard, Samsung Pay, etc.'
+                ),
+                'testmode' => array(
+                    'title' => 'Test Mode',
+                    'type' => 'checkbox',
+                    'label' => 'Enable Test Mode',
+                    'default' => 'yes',
+                    'description' => 'Place the payment gateway in test mode using the test API keys.'
+                ),
+                'username' => array(
+                    'title' => 'Username',
+                    'type' => 'text',
+                    'description' => 'Enter the username for the Etisalat Payment Gateway.'
+                ),
+                'password' => array(
+                    'title' => 'Password',
+                    'type' => 'password',
+                    'description' => 'Enter the password for the Etisalat Payment Gateway.'
+                ),
+                'payment_failed' => array(
+                    'title' => 'Payment Failed Page URL',
+                    'type' => 'text',
+                    'description' => 'URL for the page which user will be redirected to after a failed payment.'
+                )
+            );
         }
     }
 }
