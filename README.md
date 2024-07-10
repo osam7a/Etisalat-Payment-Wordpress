@@ -131,6 +131,7 @@ The developer's quick start on installing & running Etisalat-Payment-Wordpress.
 ## Roadmap
 
 - [x] Basic functionalities of redirection from site to gateway and back.
+- [ ] Upload plugin to Wordpress.org
 - [ ] Better & More user-friendly error handling, especially in Payment Failed case.
 - [ ] A more secure approach towards hiding the Username & Password from other admin users.
 - [ ] Button widgets for instant checkout (Including Apple Pay & GPay).
