@@ -36,7 +36,7 @@
     <img src="etisalat.png" alt="Logo" height="200">
   </a>
 
-  <h3 align="center">Etisalat Payment Gateway on Wordpress</h3>
+  <h1 align="center">Etisalat Payment Gateway on Wordpress</h1>
 
   <p align="center">
     An open-source WordPress plugin for seamless integration with the Etisalat Payment Gateway in the UAE. 
