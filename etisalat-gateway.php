@@ -1,7 +1,7 @@
 <?php
 /*
- * Plugin Name: Etisalat Payment Gateway.
- * Plugin URI: https://ipg.comtrust.ae/MerchantEx/login/login.
+ * Plugin Name: Etisalat Payment Gateway
+ * Plugin URI: https://ipg.comtrust.ae/MerchantEx/login/login
  * Description: Integrate the Etisalat Payment Gateway with WooCommerce using the Integration API.
  * Author: Osama Alhennawi
  * Author URI: https://github.com/osam7a
