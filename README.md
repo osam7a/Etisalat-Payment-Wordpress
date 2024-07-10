@@ -31,7 +31,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/osam7a/Etisalat-Payment-Wordpress">
-    <img src="logo.png" alt="Logo" height="80">
+    <img src="etisalat.png" alt="Logo" height="80">
   </a>
 
   <h3 align="center">Etisalat Payment Gateway on Wordpress</h3>
